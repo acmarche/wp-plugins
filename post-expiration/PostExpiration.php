@@ -110,8 +110,8 @@ class PostExpiration
         foreach ($this->getPostsWithExpiration() as $post) {
             $expireDate = $this->convertToDateTime(get_post_meta($post->ID, self::NAME_META, true));
             if ($expireDate != null && $expireDate->format('Y-m-d') < $today->format('Y-m-d')) {
-                echo $post->post_title.'expire le '.$expireDate->format('Y-m-d').'\n';
-              //  wp_delete_post($post->ID, false);
+               // echo $post->post_title.'expire le '.$expireDate->format('Y-m-d').'\n';
+                wp_delete_post($post->ID, false);
             }
         }
     }
