@@ -1,6 +1,6 @@
 <?php
 
-use AcMarche\Bottin\Repository\BottinRepository;
+use AcMarche\Bottin\src\Repository\BottinRepository;
 
 class BottinCategoryMetaBox
 {
