@@ -1,6 +1,6 @@
 <?php
 
-use AcMarche\Bottin\src\Repository\BottinRepository;
+use AcMarche\Bottin\Repository\BottinRepository;
 
 class BottinCategoryMetaBox
 {
@@ -13,7 +13,6 @@ class BottinCategoryMetaBox
         $bottin_refrubrique = get_term_meta($term_id, self::KEY_NAME, $single);
         $bottinRepository = new BottinRepository();
       //  dump($bottinRepository->getTreeCategories());
-
         ?>
         <table class="form-table">
             <tr class="form-field">
