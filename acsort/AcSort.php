@@ -72,7 +72,7 @@ class AcSort
      */
     public static function trieNews(array $news): array
     {
-       // dump($news);
+        // dump($news);
         //obtient table avec id news id blog order
         $ordre = self::getOrdreNews();
         /*
@@ -82,7 +82,7 @@ class AcSort
         array_map(
             function ($post) use ($ordre) {
                 $post->order = 0;
-                $needle      = array_filter(
+                $needle = array_filter(
                     $ordre,
                     function ($e) use ($post) {
                         if ($post->ID == $e->id_news || $post->blod_id == $e->id_blog) {
@@ -98,9 +98,10 @@ class AcSort
             },
             $news
         );
-      //  dump($news);
+        //  dump($news);
         $news = SortUtil::sortByPosition($news);
-     //   dump($news);
+
+        //   dump($news);
 
         return $news;
     }
@@ -128,16 +129,16 @@ class AcSort
     {
         global $wpdb;
         parse_str($_POST['order'], $data);
-        $i    = 0;
+        $i = 0;
         $type = null;
         foreach ($data as $clef => $tab) :
-            $vars   = array();
+            $vars = array();
             $varsUp = array();
             list($nul, $post_id) = explode("_", $clef);
-            $blog_id         = $tab[0];
+            $blog_id = $tab[0];
             $vars["id_blog"] = $blog_id;
             $vars["id_news"] = $post_id;
-            $vars["order"]   = $i;
+            $vars["order"] = $i;
             $varsUp["order"] = $i;
             $i++;
 
@@ -162,7 +163,7 @@ class AcSort
 
                 if ($wpdb->last_error) {
                     echo '<p style="color: red;">Impossible d\'obtenir les infos de la news. Erreur : <br />'.
-                         $wpdb->last_error.'</p>';
+                        $wpdb->last_error.'</p>';
 
                     return;
                 }
@@ -250,7 +251,7 @@ class AcSort
      */
     static function getSortedItems(int $cat_id, array $posts): array
     {
-        $items_trie       = array();
+        $items_trie = array();
         $items_not_sorted = array();
         //obtient table avec id news id blog order
         $ordre = self::getOrderOfItems($cat_id);
@@ -264,10 +265,13 @@ class AcSort
              * si oui va dans un tableau temporaire qui sera en premier
              */
             foreach ($ordre as $item) {
-                $cat_id  = $item["cat_id"];
+                $cat_id = $item["cat_id"];
                 $post_id = $item["post_id"];
 
                 foreach ($posts as $key => $post) {
+                    if (!isset($post->ID)) {
+                        continue;
+                    }
                     if ($post_id == $post->ID) {
                         $items_trie[] = $post;
                         unset($posts[$key]);
@@ -300,8 +304,8 @@ class AcSort
     {
         foreach ($ordre as $item) {
             $post_id = $item["post_id"];
-            $post    = get_post($post_id);
-            if ( ! $post) {
+            $post = get_post($post_id);
+            if (!$post) {
                 //   var_dump($post_id);
             }
         }
@@ -323,37 +327,37 @@ class AcSort
 
                     foreach ($values as $ordre => $post_id) {
                         $where = array('cat_id' => $cat_id, 'post_id' => $post_id);
-                        $up    = array('sort' => $ordre);
+                        $up = array('sort' => $ordre);
 
                         //try update if existe
                         $update = $wpdb->update($table_name, $up, $where);
                         echo "update $update <br />";
 
                         if ($wpdb->last_error) {
-                            $error    = "Impossible update. Erreur : <br />";
-                            $error    .= $wpdb->last_error;
-                            $error    .= $wpdb->last_query;
+                            $error = "Impossible update. Erreur : <br />";
+                            $error .= $wpdb->last_error;
+                            $error .= $wpdb->last_query;
                             $wp_error = new WP_Error(200, $error);
-                            $error    .= $wp_error->get_error_message();
+                            $error .= $wp_error->get_error_message();
                             mail('jf@marche.be', "error", $error);
                         }
-                        if ( ! $update) {
+                        if (!$update) {
 
                             /**
                              * check if already in table
                              */
-                            $query    = "SELECT * FROM $table_name WHERE `post_id` = %s AND `cat_id` = %s ";
+                            $query = "SELECT * FROM $table_name WHERE `post_id` = %s AND `cat_id` = %s ";
                             $num_rows = $wpdb->query($wpdb->prepare($query, $post_id, $cat_id));
 
                             if ($num_rows == 0) {
                                 $vars = array('cat_id' => $cat_id, 'post_id' => $post_id, 'sort' => $ordre);
                                 $wpdb->insert($table_name, $vars);
                                 if ($wpdb->last_error) {
-                                    $error    = "Impossible update. Erreur : <br />";
-                                    $error    .= $wpdb->last_error;
-                                    $error    .= $wpdb->last_query;
+                                    $error = "Impossible update. Erreur : <br />";
+                                    $error .= $wpdb->last_error;
+                                    $error .= $wpdb->last_query;
                                     $wp_error = new WP_Error(200, $error);
-                                    $error    .= $wp_error->get_error_message();
+                                    $error .= $wp_error->get_error_message();
                                     mail('jf@marche.be', "error", $error);
                                 }
                             }
