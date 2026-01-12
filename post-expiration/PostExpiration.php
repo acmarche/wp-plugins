@@ -87,10 +87,7 @@ class PostExpiration
         }
     }
 
-    /**
-     * @return array []
-     */
-    public function getPostsWithExpiration(): array
+    function getExpiredPublications(): array
     {
         $expired = [];
         $today = date('Y-m-d');
@@ -101,11 +98,6 @@ class PostExpiration
         }
 
         return $expired;
-    }
-
-    function deleteExpirePost(): array
-    {
-        return $this->getPostsWithExpiration();
     }
 
 }
