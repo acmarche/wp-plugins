@@ -94,7 +94,9 @@ class PostExpiration
     {
         $expired = [];
         $today = date('Y-m-d');
+        dump(WpRepository::getAllPublications());
         foreach (WpRepository::getAllPublications() as $publication) {
+            dump($publication);
             if ($publication->expire_date != null && $publication->expire_date <= $today) {
                 $expired[] = $publication;
             }
